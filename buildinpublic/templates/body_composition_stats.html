@@ -1,0 +1,432 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Body Composition Stats Template</title>
+    <style>
+        :root {
+            --bg-color: #f9fafb;
+            --card-bg: #ffffff;
+            --text-primary: #1f2937;
+            --text-secondary: #6b7280;
+            --font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+
+            /* Status Colors */
+            --color-yellow: #f59e0b;
+            --color-red: #ef4444;
+            --color-blue: #3b82f6;
+            --color-green: #10b981;
+            --color-teal: #14b8a6;
+            /* For Visceral Fat/Body Water/Protein usually green/teal */
+        }
+
+        body {
+            background-color: var(--bg-color);
+            font-family: var(--font-family);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 40px 20px;
+            min-height: 100vh;
+            margin: 0;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 480px;
+            /* Mobile width simulation */
+            background: #f3f4f6;
+            /* Light gray background of the app */
+            padding: 20px;
+            border-radius: 30px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+            border: 8px solid #fff;
+            /* Phone frame illusion */
+        }
+
+        /* Header */
+        .header {
+            margin-bottom: 20px;
+            padding: 0 4px;
+        }
+
+        .title-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 4px;
+        }
+
+        h2 {
+            font-size: 18px;
+            font-weight: 600;
+            color: #111;
+            margin: 0;
+        }
+
+        .subtitle {
+            font-size: 13px;
+            color: #666;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            cursor: pointer;
+        }
+
+        /* Grid */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 10px;
+        }
+
+        .card {
+            background: var(--card-bg);
+            border-radius: 16px;
+            padding: 16px 10px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            min-height: 110px;
+            box-shadow: 0 1px 2px rgba(0, 0, 0, 0.02);
+        }
+
+        .label {
+            font-size: 11px;
+            color: #666;
+            margin-bottom: 6px;
+            white-space: nowrap;
+        }
+
+        .value-group {
+            display: flex;
+            align-items: baseline;
+            gap: 2px;
+            margin-bottom: 6px;
+        }
+
+        .value {
+            font-size: 22px;
+            font-weight: 700;
+            letter-spacing: -0.5px;
+        }
+
+        .unit {
+            font-size: 12px;
+            font-weight: 500;
+        }
+
+        .change-group {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            font-size: 12px;
+            font-weight: 600;
+            color: #374151;
+            /* Dark grey for the change text usually */
+        }
+
+        /* Color Modifiers */
+        .text-yellow {
+            color: var(--color-yellow);
+        }
+
+        .text-red {
+            color: var(--color-red);
+        }
+
+        .text-blue {
+            color: var(--color-blue);
+        }
+
+        .text-green {
+            color: var(--color-green);
+        }
+
+        /* Icons */
+        .arrow-down {
+            color: #10b981;
+        }
+
+        /* Usually green if weight down is good? Or just match color? Image shows teal/green arrows for down */
+        .arrow-wavy {
+            color: #3b82f6;
+        }
+
+        /* Blue wavy */
+
+        /* Specific overrides based on image */
+        .change-down {
+            color: #059669;
+        }
+
+        /* Greenish for down */
+        .change-neutral {
+            color: #1f2937;
+        }
+
+        /* Black/Grey for no change */
+
+        /* Editability */
+        [contenteditable]:hover {
+            background-color: rgba(0, 0, 0, 0.03);
+            border-radius: 4px;
+            cursor: text;
+            outline: none;
+        }
+
+        [contenteditable]:focus {
+            background-color: rgba(0, 0, 0, 0.05);
+            outline: none;
+        }
+
+        /* Sort Card */
+        .sort-card {
+            cursor: pointer;
+            color: #666;
+        }
+
+        .sort-icon {
+            font-size: 24px;
+            margin-bottom: 4px;
+        }
+
+        /* Chat Bubble */
+        .chat-bubble {
+            position: absolute;
+            bottom: 60px;
+            right: 40px;
+            width: 50px;
+            height: 50px;
+            background: #0ea5e9;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            box-shadow: 0 4px 10px rgba(14, 165, 233, 0.4);
+            cursor: pointer;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="container">
+
+        <div class="header">
+            <div class="title-row">
+                <h2 contenteditable="true">Body Composition</h2>
+                <div style="font-size: 20px;">›</div>
+            </div>
+            <div class="subtitle">
+                <span contenteditable="true">Compared with 7 Apr 2025 at 11:00:16</span>
+                <span style="font-size: 10px;">▼</span>
+            </div>
+        </div>
+
+        <div class="stats-grid">
+
+            <!-- Weight -->
+            <div class="card">
+                <div class="label" contenteditable="true">Weight</div>
+                <div class="value-group text-yellow">
+                    <span class="value" contenteditable="true">93.20</span>
+                    <span class="unit" contenteditable="true">kg</span>
+                </div>
+                <div class="change-group change-down">
+                    <span>↓</span>
+                    <span contenteditable="true">0.10</span>
+                </div>
+            </div>
+
+            <!-- BMI -->
+            <div class="card">
+                <div class="label" contenteditable="true">BMI</div>
+                <div class="value-group text-yellow">
+                    <span class="value" contenteditable="true">28.1</span>
+                </div>
+                <div class="change-group change-down">
+                    <span>↓</span>
+                    <span contenteditable="true">0.1</span>
+                </div>
+            </div>
+
+            <!-- Body Fat -->
+            <div class="card">
+                <div class="label" contenteditable="true">Body Fat</div>
+                <div class="value-group text-red">
+                    <span class="value" contenteditable="true">29.2</span>
+                    <span class="unit" contenteditable="true">%</span>
+                </div>
+                <div class="change-group change-neutral">
+                    <span>~</span>
+                    <span contenteditable="true">0.0</span>
+                </div>
+            </div>
+
+            <!-- Skeletal Muscle -->
+            <div class="card">
+                <div class="label" contenteditable="true">Skeletal Muscle</div>
+                <div class="value-group text-blue">
+                    <span class="value" contenteditable="true">45.6</span>
+                    <span class="unit" contenteditable="true">%</span>
+                </div>
+                <div class="change-group change-neutral">
+                    <span>~</span>
+                    <span contenteditable="true">0.0</span>
+                </div>
+            </div>
+
+            <!-- Fat-Free Mass -->
+            <div class="card">
+                <div class="label" contenteditable="true">Fat-Free Mass</div>
+                <div class="value-group text-green">
+                    <span class="value" contenteditable="true">65.99</span>
+                    <span class="unit" contenteditable="true">kg</span>
+                </div>
+                <div class="change-group change-down">
+                    <span>↓</span>
+                    <span contenteditable="true">0.07</span>
+                </div>
+            </div>
+
+            <!-- Subcutaneous Fat -->
+            <div class="card">
+                <div class="label" contenteditable="true">Subcutaneous Fat</div>
+                <div class="value-group text-yellow">
+                    <span class="value" contenteditable="true">25.8</span>
+                    <span class="unit" contenteditable="true">%</span>
+                </div>
+                <div class="change-group change-neutral">
+                    <span>~</span>
+                    <span contenteditable="true">0.0</span>
+                </div>
+            </div>
+
+            <!-- Visceral Fat -->
+            <div class="card">
+                <div class="label" contenteditable="true">Visceral Fat</div>
+                <div class="value-group text-green">
+                    <span class="value" contenteditable="true">11</span>
+                </div>
+                <div class="change-group change-neutral">
+                    <span>~</span>
+                    <span contenteditable="true">0</span>
+                </div>
+            </div>
+
+            <!-- Body Water -->
+            <div class="card">
+                <div class="label" contenteditable="true">Body Water</div>
+                <div class="value-group text-green">
+                    <span class="value" contenteditable="true">51.1</span>
+                    <span class="unit" contenteditable="true">%</span>
+                </div>
+                <div class="change-group change-neutral">
+                    <span>~</span>
+                    <span contenteditable="true">0.0</span>
+                </div>
+            </div>
+
+            <!-- Muscle Mass -->
+            <div class="card">
+                <div class="label" contenteditable="true">Muscle Mass</div>
+                <div class="value-group text-green">
+                    <span class="value" contenteditable="true">62.72</span>
+                    <span class="unit" contenteditable="true">kg</span>
+                </div>
+                <div class="change-group change-down">
+                    <span>↓</span>
+                    <span contenteditable="true">0.07</span>
+                </div>
+            </div>
+
+            <!-- Bone Mass -->
+            <div class="card">
+                <div class="label" contenteditable="true">Bone Mass</div>
+                <div class="value-group text-green">
+                    <span class="value" contenteditable="true">3.27</span>
+                    <span class="unit" contenteditable="true">kg</span>
+                </div>
+                <div class="change-group change-neutral">
+                    <span>~</span>
+                    <span contenteditable="true">0.00</span>
+                </div>
+            </div>
+
+            <!-- Protein -->
+            <div class="card">
+                <div class="label" contenteditable="true">Protein</div>
+                <div class="value-group text-green">
+                    <span class="value" contenteditable="true">16.1</span>
+                    <span class="unit" contenteditable="true">%</span>
+                </div>
+                <div class="change-group change-neutral">
+                    <span>~</span>
+                    <span contenteditable="true">0.0</span>
+                </div>
+            </div>
+
+            <!-- BMR -->
+            <div class="card">
+                <div class="label" contenteditable="true">BMR</div>
+                <div class="value-group text-yellow">
+                    <span class="value" contenteditable="true">1782</span>
+                    <span class="unit" contenteditable="true">kcal</span>
+                </div>
+                <div class="change-group change-neutral">
+                    <span>~</span>
+                    <span contenteditable="true">0</span>
+                </div>
+            </div>
+
+            <!-- Metabolic Age -->
+            <div class="card">
+                <div class="label" contenteditable="true">Metabolic Age</div>
+                <div class="value-group text-yellow">
+                    <span class="value" contenteditable="true">46</span>
+                </div>
+                <div class="change-group change-neutral">
+                    <span>~</span>
+                    <span contenteditable="true">0</span>
+                </div>
+            </div>
+
+            <!-- Sort Button -->
+            <div class="card sort-card">
+                <div class="sort-icon">⊞</div>
+                <div class="label" style="margin:0;">Sort</div>
+            </div>
+
+        </div>
+
+        <!-- Chat Bubble Overlay -->
+        <div style="position: relative;">
+            <div class="chat-bubble">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
+                    <path d="M20 2H4c-1.1 0-2 .9-2 2v18l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2z" />
+                </svg>
+            </div>
+        </div>
+
+    </div>
+
+    <script>
+        // Prevent rich text paste
+        document.querySelectorAll('[contenteditable]').forEach(el => {
+            el.addEventListener('paste', function (e) {
+                e.preventDefault();
+                var text = (e.originalEvent || e).clipboardData.getData('text/plain');
+                document.execCommand('insertText', false, text);
+            });
+        });
+    </script>
+
+</body>
+
+</html>
