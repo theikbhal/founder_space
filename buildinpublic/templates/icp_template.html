@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ideal Customer Profile (ICP) Template</title>
+    <style>
+        :root {
+            --bg-color: #f3f4f6;
+            --card-bg: #ffffff;
+            --text-primary: #111827;
+            --text-secondary: #6b7280;
+            --accent-color: #4f46e5;
+            /* Indigo */
+            --tag-bg: #eef2ff;
+            --tag-text: #4338ca;
+            --font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            font-family: var(--font-family);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+            padding: 40px;
+        }
+
+        .icp-card {
+            background: var(--card-bg);
+            width: 900px;
+            border-radius: 24px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.05);
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #4f46e5 0%, #818cf8 100%);
+            padding: 40px;
+            color: white;
+            display: flex;
+            align-items: center;
+            gap: 30px;
+        }
+
+        .avatar-placeholder {
+            width: 120px;
+            height: 120px;
+            background-color: rgba(255, 255, 255, 0.2);
+            border: 4px solid rgba(255, 255, 255, 0.4);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 40px;
+            flex-shrink: 0;
+            cursor: pointer;
+            overflow: hidden;
+        }
+
+        .avatar-placeholder img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: none;
+            /* Hidden by default until user adds one, or we use a placeholder */
+        }
+
+        .header-content {
+            flex-grow: 1;
+        }
+
+        h1 {
+            margin: 0 0 8px 0;
+            font-size: 32px;
+            font-weight: 700;
+        }
+
+        .role-tag {
+            display: inline-block;
+            background: rgba(255, 255, 255, 0.2);
+            padding: 6px 16px;
+            border-radius: 20px;
+            font-size: 14px;
+            font-weight: 500;
+            backdrop-filter: blur(4px);
+        }
+
+        .content-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 40px;
+            padding: 40px;
+        }
+
+        .section {
+            margin-bottom: 30px;
+        }
+
+        .section-title {
+            font-size: 12px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: var(--text-secondary);
+            font-weight: 700;
+            margin-bottom: 16px;
+            border-bottom: 1px solid #e5e7eb;
+            padding-bottom: 8px;
+        }
+
+        .list-item {
+            display: flex;
+            gap: 12px;
+            margin-bottom: 12px;
+            align-items: flex-start;
+        }
+
+        .icon {
+            color: var(--accent-color);
+            margin-top: 2px;
+            flex-shrink: 0;
+        }
+
+        .text {
+            font-size: 16px;
+            color: var(--text-primary);
+            line-height: 1.5;
+        }
+
+        .tag-cloud {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .tag {
+            background: var(--tag-bg);
+            color: var(--tag-text);
+            padding: 6px 14px;
+            border-radius: 8px;
+            font-size: 14px;
+            font-weight: 600;
+        }
+
+        /* Editability */
+        [contenteditable]:hover {
+            background-color: rgba(0, 0, 0, 0.03);
+            border-radius: 4px;
+            cursor: text;
+            outline: none;
+        }
+
+        [contenteditable]:focus {
+            background-color: rgba(0, 0, 0, 0.05);
+            outline: none;
+        }
+
+        /* Specific styles for the white area text */
+        .content-grid [contenteditable]:hover {
+            background-color: #f9fafb;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="icp-card">
+
+        <!-- Header with Persona -->
+        <div class="header">
+            <div class="avatar-placeholder">
+                <span contenteditable="true">👤</span>
+            </div>
+            <div class="header-content">
+                <h1 contenteditable="true">"Bootstrapped Brian"</h1>
+                <div class="role-tag" contenteditable="true">Solo Founder / Indie Hacker</div>
+                <div style="margin-top: 12px; opacity: 0.9; font-size: 16px;" contenteditable="true">
+                    Building SaaS products in public. Values speed and simplicity over enterprise features.
+                </div>
+            </div>
+        </div>
+
+        <!-- Main Content -->
+        <div class="content-grid">
+
+            <!-- Left Column -->
+            <div class="col">
+                <div class="section">
+                    <div class="section-title">Demographics</div>
+                    <div class="tag-cloud">
+                        <div class="tag" contenteditable="true">Age: 25-40</div>
+                        <div class="tag" contenteditable="true">Remote / Digital Nomad</div>
+                        <div class="tag" contenteditable="true">Tech Savvy</div>
+                        <div class="tag" contenteditable="true">$5k - $20k MRR</div>
+                    </div>
+                </div>
+
+                <div class="section">
+                    <div class="section-title">Pain Points</div>
+                    <div class="list-item">
+                        <div class="icon">✕</div>
+                        <div class="text" contenteditable="true">Overwhelmed by complex enterprise tools</div>
+                    </div>
+                    <div class="list-item">
+                        <div class="icon">✕</div>
+                        <div class="text" contenteditable="true">Limited time for marketing & design</div>
+                    </div>
+                    <div class="list-item">
+                        <div class="icon">✕</div>
+                        <div class="text" contenteditable="true">Struggles to create professional assets quickly</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Right Column -->
+            <div class="col">
+                <div class="section">
+                    <div class="section-title">Goals & Motivations</div>
+                    <div class="list-item">
+                        <div class="icon">✓</div>
+                        <div class="text" contenteditable="true">Reach financial independence</div>
+                    </div>
+                    <div class="list-item">
+                        <div class="icon">✓</div>
+                        <div class="text" contenteditable="true">Build a personal brand on Twitter/X</div>
+                    </div>
+                    <div class="list-item">
+                        <div class="icon">✓</div>
+                        <div class="text" contenteditable="true">Ship products fast without friction</div>
+                    </div>
+                </div>
+
+                <div class="section">
+                    <div class="section-title">Where they hang out</div>
+                    <div class="tag-cloud">
+                        <div class="tag" contenteditable="true">Twitter / X</div>
+                        <div class="tag" contenteditable="true">IndieHackers</div>
+                        <div class="tag" contenteditable="true">Product Hunt</div>
+                        <div class="tag" contenteditable="true">Reddit (r/SaaS)</div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+
+    <script>
+        // Prevent rich text paste
+        document.querySelectorAll('[contenteditable]').forEach(el => {
+            el.addEventListener('paste', function (e) {
+                e.preventDefault();
+                var text = (e.originalEvent || e).clipboardData.getData('text/plain');
+                document.execCommand('insertText', false, text);
+            });
+        });
+    </script>
+
+</body>
+
+</html>

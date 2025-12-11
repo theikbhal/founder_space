@@ -1,0 +1,567 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Us vs Them Comparison Template</title>
+    <style>
+        :root {
+            --bg-color: #f9fafb;
+            --text-primary: #111827;
+            --text-secondary: #4b5563;
+            --border-color: #e5e7eb;
+            --highlight-bg: #fff1f2;
+            /* Light pinkish tint for 'Us' column if desired, or just white */
+            --font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            font-family: var(--font-family);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 60px 20px;
+            min-height: 100vh;
+            margin: 0;
+        }
+
+        h1 {
+            font-size: 48px;
+            font-weight: 700;
+            margin-bottom: 40px;
+            color: var(--text-primary);
+            text-align: center;
+            letter-spacing: -1px;
+        }
+
+        .table-container {
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.03);
+            overflow: hidden;
+            /* For rounded corners */
+            border: 1px solid var(--border-color);
+            max-width: 1400px;
+            width: 100%;
+            overflow-x: auto;
+            /* Allow scroll if too many cols */
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            min-width: 1000px;
+        }
+
+        th,
+        td {
+            padding: 16px 24px;
+            border-bottom: 1px solid var(--border-color);
+            border-right: 1px solid var(--border-color);
+            text-align: center;
+            vertical-align: middle;
+        }
+
+        th:last-child,
+        td:last-child {
+            border-right: none;
+        }
+
+        tr:last-child td {
+            border-bottom: none;
+        }
+
+        /* Header Row */
+        thead th {
+            background-color: #fff;
+            font-weight: 700;
+            font-size: 18px;
+            padding-top: 24px;
+            padding-bottom: 24px;
+        }
+
+        /* First Column (Features) */
+        td:first-child {
+            text-align: left;
+            font-weight: 500;
+            color: var(--text-primary);
+            font-size: 15px;
+            width: 300px;
+            background-color: #fff;
+            /* Sticky col background if needed */
+        }
+
+        /* "Us" Column (2nd column) */
+        th:nth-child(2),
+        td:nth-child(2) {
+            background-color: #fff;
+            /* Could add a subtle tint */
+            position: relative;
+        }
+
+        /* Competitor Columns */
+        th:not(:first-child):not(:nth-child(2)),
+        td:not(:first-child):not(:nth-child(2)) {
+            color: var(--text-secondary);
+        }
+
+        /* Icons */
+        .icon-check {
+            color: #111827;
+            /* Black filled check */
+            width: 24px;
+            height: 24px;
+            display: inline-block;
+        }
+
+        .icon-cross {
+            color: #9ca3af;
+            /* Gray outlined cross */
+            width: 24px;
+            height: 24px;
+            display: inline-block;
+        }
+
+        /* Logo Placeholders */
+        .logo-text {
+            font-size: 20px;
+            font-weight: 800;
+            letter-spacing: -0.5px;
+        }
+
+        .comp-logo {
+            font-size: 16px;
+            font-weight: 600;
+            color: #6b7280;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+        }
+
+        /* Interactive Cells */
+        td.interactive {
+            cursor: pointer;
+            transition: background-color 0.1s;
+        }
+
+        td.interactive:hover {
+            background-color: #f3f4f6;
+        }
+
+        /* Editability */
+        [contenteditable]:hover {
+            background-color: rgba(0, 0, 0, 0.02);
+            border-radius: 4px;
+            cursor: text;
+            outline: none;
+        }
+
+        [contenteditable]:focus {
+            background-color: rgba(0, 0, 0, 0.04);
+            outline: none;
+        }
+
+        /* Helper for the user */
+        .helper-text {
+            margin-top: 20px;
+            color: #9ca3af;
+            font-size: 14px;
+        }
+    </style>
+</head>
+
+<body>
+
+    <h1 contenteditable="true">Us vs. them</h1>
+
+    <div class="table-container">
+        <table>
+            <thead>
+                <tr>
+                    <th></th> <!-- Empty corner -->
+                    <th>
+                        <div class="logo-text" contenteditable="true">MyProduct</div>
+                    </th>
+                    <th>
+                        <div class="comp-logo" contenteditable="true">Competitor A</div>
+                    </th>
+                    <th>
+                        <div class="comp-logo" contenteditable="true">Competitor B</div>
+                    </th>
+                    <th>
+                        <div class="comp-logo" contenteditable="true">Competitor C</div>
+                    </th>
+                    <th>
+                        <div class="comp-logo" contenteditable="true">Competitor D</div>
+                    </th>
+                    <th>
+                        <div class="comp-logo" contenteditable="true">Competitor E</div>
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                <!-- Row 1 -->
+                <tr>
+                    <td contenteditable="true">💰 100% money-back guarantee</td>
+                    <td class="interactive" onclick="toggleIcon(this)">
+                        <svg class="icon-check" viewBox="0 0 24 24" fill="currentColor">
+                            <path fill-rule="evenodd"
+                                d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
+                                clip-rule="evenodd" />
+                        </svg>
+                    </td>
+                    <td class="interactive" onclick="toggleIcon(this)">
+                        <svg class="icon-cross" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="1.5">
+                            <circle cx="12" cy="12" r="9" />
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M15 9l-6 6M9 9l6 6" />
+                        </svg>
+                    </td>
+                    <td class="interactive" onclick="toggleIcon(this)">
+                        <svg class="icon-cross" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="1.5">
+                            <circle cx="12" cy="12" r="9" />
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M15 9l-6 6M9 9l6 6" />
+                        </svg>
+                    </td>
+                    <td class="interactive" onclick="toggleIcon(this)">
+                        <svg class="icon-cross" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="1.5">
+                            <circle cx="12" cy="12" r="9" />
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M15 9l-6 6M9 9l6 6" />
+                        </svg>
+                    </td>
+                    <td class="interactive" onclick="toggleIcon(this)">
+                        <svg class="icon-cross" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="1.5">
+                            <circle cx="12" cy="12" r="9" />
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M15 9l-6 6M9 9l6 6" />
+                        </svg>
+                    </td>
+                    <td class="interactive" onclick="toggleIcon(this)">
+                        <svg class="icon-cross" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="1.5">
+                            <circle cx="12" cy="12" r="9" />
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M15 9l-6 6M9 9l6 6" />
+                        </svg>
+                    </td>
+                </tr>
+
+                <!-- Row 2 -->
+                <tr>
+                    <td contenteditable="true">⚡ Scriptwriting + creative briefs</td>
+                    <td class="interactive" onclick="toggleIcon(this)">
+                        <svg class="icon-check" viewBox="0 0 24 24" fill="currentColor">
+                            <path fill-rule="evenodd"
+                                d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
+                                clip-rule="evenodd" />
+                        </svg>
+                    </td>
+                    <td class="interactive" onclick="toggleIcon(this)">
+                        <svg class="icon-cross" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="1.5">
+                            <circle cx="12" cy="12" r="9" />
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M15 9l-6 6M9 9l6 6" />
+                        </svg>
+                    </td>
+                    <td class="interactive" onclick="toggleIcon(this)">
+                        <svg class="icon-check" viewBox="0 0 24 24" fill="currentColor">
+                            <path fill-rule="evenodd"
+                                d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
+                                clip-rule="evenodd" />
+                        </svg>
+                    </td>
+                    <td class="interactive" onclick="toggleIcon(this)">
+                        <svg class="icon-cross" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="1.5">
+                            <circle cx="12" cy="12" r="9" />
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M15 9l-6 6M9 9l6 6" />
+                        </svg>
+                    </td>
+                    <td class="interactive" onclick="toggleIcon(this)">
+                        <svg class="icon-cross" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="1.5">
+                            <circle cx="12" cy="12" r="9" />
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M15 9l-6 6M9 9l6 6" />
+                        </svg>
+                    </td>
+                    <td class="interactive" onclick="toggleIcon(this)">
+                        <svg class="icon-cross" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="1.5">
+                            <circle cx="12" cy="12" r="9" />
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M15 9l-6 6M9 9l6 6" />
+                        </svg>
+                    </td>
+                </tr>
+
+                <!-- Row 3 -->
+                <tr>
+                    <td contenteditable="true">🔍 Audience research</td>
+                    <td class="interactive" onclick="toggleIcon(this)">
+                        <svg class="icon-check" viewBox="0 0 24 24" fill="currentColor">
+                            <path fill-rule="evenodd"
+                                d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
+                                clip-rule="evenodd" />
+                        </svg>
+                    </td>
+                    <td class="interactive" onclick="toggleIcon(this)">
+                        <svg class="icon-cross" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="1.5">
+                            <circle cx="12" cy="12" r="9" />
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M15 9l-6 6M9 9l6 6" />
+                        </svg>
+                    </td>
+                    <td class="interactive" onclick="toggleIcon(this)">
+                        <svg class="icon-cross" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="1.5">
+                            <circle cx="12" cy="12" r="9" />
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M15 9l-6 6M9 9l6 6" />
+                        </svg>
+                    </td>
+                    <td class="interactive" onclick="toggleIcon(this)">
+                        <svg class="icon-cross" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="1.5">
+                            <circle cx="12" cy="12" r="9" />
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M15 9l-6 6M9 9l6 6" />
+                        </svg>
+                    </td>
+                    <td class="interactive" onclick="toggleIcon(this)">
+                        <svg class="icon-cross" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="1.5">
+                            <circle cx="12" cy="12" r="9" />
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M15 9l-6 6M9 9l6 6" />
+                        </svg>
+                    </td>
+                    <td class="interactive" onclick="toggleIcon(this)">
+                        <svg class="icon-cross" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="1.5">
+                            <circle cx="12" cy="12" r="9" />
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M15 9l-6 6M9 9l6 6" />
+                        </svg>
+                    </td>
+                </tr>
+
+                <!-- Row 4 -->
+                <tr>
+                    <td contenteditable="true">🎬 Video ads (create + edit)</td>
+                    <td class="interactive" onclick="toggleIcon(this)">
+                        <svg class="icon-check" viewBox="0 0 24 24" fill="currentColor">
+                            <path fill-rule="evenodd"
+                                d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
+                                clip-rule="evenodd" />
+                        </svg>
+                    </td>
+                    <td class="interactive" onclick="toggleIcon(this)">
+                        <svg class="icon-cross" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="1.5">
+                            <circle cx="12" cy="12" r="9" />
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M15 9l-6 6M9 9l6 6" />
+                        </svg>
+                    </td>
+                    <td class="interactive" onclick="toggleIcon(this)">
+                        <svg class="icon-check" viewBox="0 0 24 24" fill="currentColor">
+                            <path fill-rule="evenodd"
+                                d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
+                                clip-rule="evenodd" />
+                        </svg>
+                    </td>
+                    <td class="interactive" onclick="toggleIcon(this)">
+                        <svg class="icon-cross" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="1.5">
+                            <circle cx="12" cy="12" r="9" />
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M15 9l-6 6M9 9l6 6" />
+                        </svg>
+                    </td>
+                    <td class="interactive" onclick="toggleIcon(this)">
+                        <svg class="icon-cross" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="1.5">
+                            <circle cx="12" cy="12" r="9" />
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M15 9l-6 6M9 9l6 6" />
+                        </svg>
+                    </td>
+                    <td class="interactive" onclick="toggleIcon(this)">
+                        <svg class="icon-cross" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="1.5">
+                            <circle cx="12" cy="12" r="9" />
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M15 9l-6 6M9 9l6 6" />
+                        </svg>
+                    </td>
+                </tr>
+
+                <!-- Row 5 -->
+                <tr>
+                    <td contenteditable="true">📂 Creative storage</td>
+                    <td class="interactive" onclick="toggleIcon(this)">
+                        <svg class="icon-check" viewBox="0 0 24 24" fill="currentColor">
+                            <path fill-rule="evenodd"
+                                d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
+                                clip-rule="evenodd" />
+                        </svg>
+                    </td>
+                    <td class="interactive" onclick="toggleIcon(this)">
+                        <svg class="icon-cross" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="1.5">
+                            <circle cx="12" cy="12" r="9" />
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M15 9l-6 6M9 9l6 6" />
+                        </svg>
+                    </td>
+                    <td class="interactive" onclick="toggleIcon(this)">
+                        <svg class="icon-cross" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="1.5">
+                            <circle cx="12" cy="12" r="9" />
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M15 9l-6 6M9 9l6 6" />
+                        </svg>
+                    </td>
+                    <td class="interactive" onclick="toggleIcon(this)">
+                        <svg class="icon-check" viewBox="0 0 24 24" fill="currentColor">
+                            <path fill-rule="evenodd"
+                                d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
+                                clip-rule="evenodd" />
+                        </svg>
+                    </td>
+                    <td class="interactive" onclick="toggleIcon(this)">
+                        <svg class="icon-check" viewBox="0 0 24 24" fill="currentColor">
+                            <path fill-rule="evenodd"
+                                d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
+                                clip-rule="evenodd" />
+                        </svg>
+                    </td>
+                    <td class="interactive" onclick="toggleIcon(this)">
+                        <svg class="icon-cross" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="1.5">
+                            <circle cx="12" cy="12" r="9" />
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M15 9l-6 6M9 9l6 6" />
+                        </svg>
+                    </td>
+                </tr>
+
+                <!-- Row 6 -->
+                <tr>
+                    <td contenteditable="true">🏷️ Split & tag assets with AI</td>
+                    <td class="interactive" onclick="toggleIcon(this)">
+                        <svg class="icon-check" viewBox="0 0 24 24" fill="currentColor">
+                            <path fill-rule="evenodd"
+                                d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
+                                clip-rule="evenodd" />
+                        </svg>
+                    </td>
+                    <td class="interactive" onclick="toggleIcon(this)">
+                        <svg class="icon-cross" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="1.5">
+                            <circle cx="12" cy="12" r="9" />
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M15 9l-6 6M9 9l6 6" />
+                        </svg>
+                    </td>
+                    <td class="interactive" onclick="toggleIcon(this)">
+                        <svg class="icon-cross" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="1.5">
+                            <circle cx="12" cy="12" r="9" />
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M15 9l-6 6M9 9l6 6" />
+                        </svg>
+                    </td>
+                    <td class="interactive" onclick="toggleIcon(this)">
+                        <svg class="icon-cross" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="1.5">
+                            <circle cx="12" cy="12" r="9" />
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M15 9l-6 6M9 9l6 6" />
+                        </svg>
+                    </td>
+                    <td class="interactive" onclick="toggleIcon(this)">
+                        <svg class="icon-cross" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="1.5">
+                            <circle cx="12" cy="12" r="9" />
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M15 9l-6 6M9 9l6 6" />
+                        </svg>
+                    </td>
+                    <td class="interactive" onclick="toggleIcon(this)">
+                        <svg class="icon-cross" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="1.5">
+                            <circle cx="12" cy="12" r="9" />
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M15 9l-6 6M9 9l6 6" />
+                        </svg>
+                    </td>
+                </tr>
+
+                <!-- Row 7 -->
+                <tr>
+                    <td contenteditable="true">👥 UGC videos</td>
+                    <td class="interactive" onclick="toggleIcon(this)">
+                        <svg class="icon-check" viewBox="0 0 24 24" fill="currentColor">
+                            <path fill-rule="evenodd"
+                                d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
+                                clip-rule="evenodd" />
+                        </svg>
+                    </td>
+                    <td class="interactive" onclick="toggleIcon(this)">
+                        <svg class="icon-cross" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="1.5">
+                            <circle cx="12" cy="12" r="9" />
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M15 9l-6 6M9 9l6 6" />
+                        </svg>
+                    </td>
+                    <td class="interactive" onclick="toggleIcon(this)">
+                        <svg class="icon-cross" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="1.5">
+                            <circle cx="12" cy="12" r="9" />
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M15 9l-6 6M9 9l6 6" />
+                        </svg>
+                    </td>
+                    <td class="interactive" onclick="toggleIcon(this)">
+                        <svg class="icon-cross" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="1.5">
+                            <circle cx="12" cy="12" r="9" />
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M15 9l-6 6M9 9l6 6" />
+                        </svg>
+                    </td>
+                    <td class="interactive" onclick="toggleIcon(this)">
+                        <svg class="icon-check" viewBox="0 0 24 24" fill="currentColor">
+                            <path fill-rule="evenodd"
+                                d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"
+                                clip-rule="evenodd" />
+                        </svg>
+                    </td>
+                    <td class="interactive" onclick="toggleIcon(this)">
+                        <svg class="icon-cross" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="1.5">
+                            <circle cx="12" cy="12" r="9" />
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M15 9l-6 6M9 9l6 6" />
+                        </svg>
+                    </td>
+                </tr>
+
+            </tbody>
+        </table>
+    </div>
+
+    <div class="helper-text">Click any cell to toggle between Check and Cross. Click text to edit.</div>
+
+    <script>
+        // Icons as strings for easy swapping
+        const checkIcon = `<svg class="icon-check" viewBox="0 0 24 24" fill="currentColor"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/></svg>`;
+        const crossIcon = `<svg class="icon-cross" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="9"/><path stroke-linecap="round" stroke-linejoin="round" d="M15 9l-6 6M9 9l6 6"/></svg>`;
+
+        function toggleIcon(cell) {
+            // Check if it currently has the check icon class
+            if (cell.querySelector('.icon-check')) {
+                cell.innerHTML = crossIcon;
+            } else {
+                cell.innerHTML = checkIcon;
+            }
+        }
+
+        // Prevent rich text paste
+        document.querySelectorAll('[contenteditable]').forEach(el => {
+            el.addEventListener('paste', function (e) {
+                e.preventDefault();
+                var text = (e.originalEvent || e).clipboardData.getData('text/plain');
+                document.execCommand('insertText', false, text);
+            });
+        });
+    </script>
+
+</body>
+
+</html>
