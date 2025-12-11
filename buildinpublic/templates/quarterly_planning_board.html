@@ -1,0 +1,401 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quarterly Planning Board</title>
+    <script src="https://html2canvas.hertzen.com/dist/html2canvas.min.js"></script>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Kalam:wght@300;400;700&family=Permanent+Marker&family=Inter:wght@400;600;800&display=swap"
+        rel="stylesheet">
+    <style>
+        :root {
+            --bg-color: #f4f4f4;
+            --grid-line: #e0e0e0;
+            --note-yellow: #fff740;
+            --note-shadow: rgba(0, 0, 0, 0.15);
+            --text-color: #222;
+        }
+
+        body {
+            margin: 0;
+            padding: 0;
+            background-color: var(--bg-color);
+            /* Grid Background Pattern */
+            background-image:
+                linear-gradient(var(--grid-line) 1px, transparent 1px),
+                linear-gradient(90deg, var(--grid-line) 1px, transparent 1px);
+            background-size: 40px 40px;
+            font-family: 'Inter', sans-serif;
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        /* Toolbar */
+        .toolbar {
+            position: fixed;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: #222;
+            padding: 10px 20px;
+            border-radius: 50px;
+            display: flex;
+            gap: 15px;
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+            z-index: 1000;
+        }
+
+        .btn {
+            background: #444;
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 20px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 600;
+            transition: background 0.2s;
+        }
+
+        .btn:hover {
+            background: #555;
+        }
+
+        .btn-primary {
+            background: #3b82f6;
+        }
+
+        .btn-primary:hover {
+            background: #2563eb;
+        }
+
+        /* Main Board Area */
+        .board {
+            width: 1400px;
+            /* Fixed width for consistent screenshot */
+            min-height: 900px;
+            margin: 0 auto;
+            padding: 60px;
+            position: relative;
+            box-sizing: border-box;
+        }
+
+        /* Header */
+        .header {
+            text-align: center;
+            margin-bottom: 60px;
+        }
+
+        h1 {
+            font-family: 'Permanent Marker', cursive;
+            font-size: 42px;
+            margin: 0;
+            transform: rotate(-1deg);
+        }
+
+        h2 {
+            font-family: 'Permanent Marker', cursive;
+            font-size: 24px;
+            margin: 10px 0 0 0;
+            color: #555;
+            transform: rotate(1deg);
+        }
+
+        /* Sections */
+        .section-row {
+            display: flex;
+            justify-content: center;
+            gap: 60px;
+            margin-bottom: 80px;
+            flex-wrap: wrap;
+        }
+
+        .section {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-width: 200px;
+        }
+
+        .section-title {
+            font-family: 'Permanent Marker', cursive;
+            font-size: 20px;
+            margin-bottom: 20px;
+            text-transform: uppercase;
+        }
+
+        .notes-container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 15px;
+            min-height: 100px;
+            /* Drop zone area */
+            padding: 10px;
+        }
+
+        /* Sticky Note */
+        .note {
+            width: 130px;
+            height: 130px;
+            background-color: var(--note-yellow);
+            box-shadow: 2px 4px 6px var(--note-shadow);
+            padding: 15px;
+            box-sizing: border-box;
+            font-family: 'Kalam', cursive;
+            font-size: 16px;
+            line-height: 1.3;
+            color: var(--text-color);
+            transform: rotate(0deg);
+            transition: transform 0.2s, box-shadow 0.2s;
+            cursor: grab;
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+        }
+
+        .note:hover {
+            transform: scale(1.05) rotate(-2deg) !important;
+            box-shadow: 4px 8px 12px rgba(0, 0, 0, 0.2);
+            z-index: 10;
+        }
+
+        .note:active {
+            cursor: grabbing;
+        }
+
+        .note[contenteditable]:empty:before {
+            content: 'Write here...';
+            color: #999;
+            opacity: 0.5;
+        }
+
+        /* Random rotations for natural look */
+        .note:nth-child(2n) {
+            transform: rotate(1deg);
+        }
+
+        .note:nth-child(3n) {
+            transform: rotate(-1.5deg);
+        }
+
+        .note:nth-child(5n) {
+            transform: rotate(2deg);
+        }
+
+        /* Delete button on note */
+        .delete-btn {
+            position: absolute;
+            top: -8px;
+            right: -8px;
+            width: 20px;
+            height: 20px;
+            background: #ff4444;
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 12px;
+            cursor: pointer;
+            opacity: 0;
+            transition: opacity 0.2s;
+            border: 2px solid white;
+        }
+
+        .note:hover .delete-btn {
+            opacity: 1;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="board" id="capture-area">
+
+        <div class="header">
+            <h1 contenteditable="true">NEXT 3 MONTHS</h1>
+            <h2 contenteditable="true">MARCH, APRIL, MAY</h2>
+        </div>
+
+        <!-- Row 1: Feeling -->
+        <div class="section-row">
+            <div class="section" style="width: 100%;">
+                <div class="section-title" contenteditable="true">FEELING</div>
+                <div class="notes-container" id="feeling-zone">
+                    <div class="note" contenteditable="true">Don't sweat the small stuff</div>
+                    <div class="note" contenteditable="true">This is a period of peace</div>
+                    <div class="note" contenteditable="true">Things will feel slower</div>
+                    <div class="note" contenteditable="true">The business serves us</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Row 2: To Do / Not To Do -->
+        <div class="section-row">
+            <div class="section">
+                <div class="section-title" contenteditable="true">TO DO LIST</div>
+                <div class="notes-container" id="todo-zone" style="width: 400px;">
+                    <div class="note" contenteditable="true">3 marketing experiments</div>
+                    <div class="note" contenteditable="true">Strengthen ICP</div>
+                    <div class="note" contenteditable="true">Take a holiday</div>
+                    <div class="note" contenteditable="true">4-day week</div>
+                </div>
+            </div>
+
+            <div class="section">
+                <div class="section-title" contenteditable="true">NOT TO DO LIST</div>
+                <div class="notes-container" id="nottodo-zone" style="width: 400px;">
+                    <div class="note" contenteditable="true">Market to new buyer personas</div>
+                    <div class="note" contenteditable="true">Major new features</div>
+                    <div class="note" contenteditable="true">Arbitrary revenue goals</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Row 3: Work Loves / Product -->
+        <div class="section-row">
+            <div class="section">
+                <div class="section-title" contenteditable="true">WORK WILSON LOVES</div>
+                <div class="notes-container">
+                    <div class="note" contenteditable="true">Monthly refactoring</div>
+                    <div class="note" contenteditable="true">High ROI product tweaks</div>
+                </div>
+            </div>
+
+            <div class="section">
+                <div class="section-title" contenteditable="true">PRODUCT</div>
+                <div class="notes-container">
+                    <div class="note" contenteditable="true">Table stakes on manage</div>
+                    <div class="note" contenteditable="true">Add delight and humour</div>
+                </div>
+            </div>
+
+            <div class="section">
+                <div class="section-title" contenteditable="true">WORK OLLY LOVES</div>
+                <div class="notes-container">
+                    <div class="note" contenteditable="true">Product marketing experiments</div>
+                    <div class="note" contenteditable="true">Driving customer success</div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- Floating Toolbar -->
+    <div class="toolbar">
+        <button class="btn" onclick="addNote()">+ Add Note</button>
+        <button class="btn btn-primary" onclick="downloadImage()">Download Image</button>
+    </div>
+
+    <script>
+        // --- Drag and Drop Logic ---
+        let draggedItem = null;
+
+        document.querySelectorAll('.notes-container').forEach(container => {
+            container.addEventListener('dragover', e => {
+                e.preventDefault();
+                const afterElement = getDragAfterElement(container, e.clientY);
+                const draggable = document.querySelector('.dragging');
+                if (draggable) {
+                    if (afterElement == null) {
+                        container.appendChild(draggable);
+                    } else {
+                        container.insertBefore(draggable, afterElement);
+                    }
+                }
+            });
+        });
+
+        function makeDraggable(el) {
+            el.draggable = true;
+
+            el.addEventListener('dragstart', () => {
+                el.classList.add('dragging');
+                draggedItem = el;
+            });
+
+            el.addEventListener('dragend', () => {
+                el.classList.remove('dragging');
+                draggedItem = null;
+            });
+
+            // Prevent editing while dragging, enable click to edit
+            el.addEventListener('mousedown', (e) => {
+                if (e.target.classList.contains('delete-btn')) return;
+                el.focus();
+            });
+
+            // Add delete button
+            if (!el.querySelector('.delete-btn')) {
+                const btn = document.createElement('div');
+                btn.className = 'delete-btn';
+                btn.innerHTML = '×';
+                btn.onclick = (e) => {
+                    e.stopPropagation(); // Prevent edit focus
+                    el.remove();
+                };
+                el.appendChild(btn);
+            }
+        }
+
+        function getDragAfterElement(container, y) {
+            const draggableElements = [...container.querySelectorAll('.note:not(.dragging)')];
+
+            return draggableElements.reduce((closest, child) => {
+                const box = child.getBoundingClientRect();
+                const offset = y - box.top - box.height / 2;
+                if (offset < 0 && offset > closest.offset) {
+                    return { offset: offset, element: child };
+                } else {
+                    return closest;
+                }
+            }, { offset: Number.NEGATIVE_INFINITY }).element;
+        }
+
+        // Initialize existing notes
+        document.querySelectorAll('.note').forEach(makeDraggable);
+
+        // --- Add Note ---
+        function addNote() {
+            const note = document.createElement('div');
+            note.className = 'note';
+            note.contentEditable = true;
+            note.innerText = 'New Idea';
+
+            // Find the first container to add to (Feeling zone)
+            document.getElementById('feeling-zone').appendChild(note);
+            makeDraggable(note);
+        }
+
+        // --- Download Image ---
+        function downloadImage() {
+            const board = document.getElementById('capture-area');
+
+            // Temporarily hide delete buttons for screenshot
+            document.body.classList.add('screenshot-mode');
+            const deleteBtns = document.querySelectorAll('.delete-btn');
+            deleteBtns.forEach(b => b.style.display = 'none');
+
+            html2canvas(board, {
+                scale: 2, // High res
+                backgroundColor: '#f4f4f4', // Match CSS var
+                logging: false
+            }).then(canvas => {
+                const link = document.createElement('a');
+                link.download = 'quarterly-plan.png';
+                link.href = canvas.toDataURL();
+                link.click();
+
+                // Restore
+                deleteBtns.forEach(b => b.style.display = 'flex');
+            });
+        }
+    </script>
+</body>
+
+</html>

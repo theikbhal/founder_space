@@ -1,0 +1,471 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Net MRR Calculator & Tracker</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://html2canvas.hertzen.com/dist/html2canvas.min.js"></script>
+    <style>
+        :root {
+            --bg-color: #f3f4f6;
+            --card-bg: #ffffff;
+            --text-primary: #111827;
+            --text-secondary: #6b7280;
+            --accent-green: #10b981;
+            --accent-red: #ef4444;
+            --accent-blue: #3b82f6;
+            --border-color: #e5e7eb;
+            --font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            font-family: var(--font-family);
+            margin: 0;
+            padding: 40px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 900px;
+            display: flex;
+            flex-direction: column;
+            gap: 30px;
+        }
+
+        /* Calculator Card */
+        .card {
+            background: var(--card-bg);
+            border-radius: 16px;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+            padding: 30px;
+            border: 1px solid var(--border-color);
+        }
+
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 24px;
+        }
+
+        h1 {
+            font-size: 24px;
+            font-weight: 800;
+            color: var(--text-primary);
+            margin: 0;
+        }
+
+        .month-selector {
+            padding: 8px 12px;
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            font-size: 14px;
+            color: var(--text-primary);
+            outline: none;
+            cursor: pointer;
+        }
+
+        /* Input Grid */
+        .input-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 40px;
+            margin-bottom: 30px;
+        }
+
+        .section-title {
+            font-size: 12px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 16px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .growth-title {
+            color: var(--accent-green);
+        }
+
+        .churn-title {
+            color: var(--accent-red);
+        }
+
+        .input-group {
+            margin-bottom: 16px;
+        }
+
+        .label {
+            display: block;
+            font-size: 13px;
+            font-weight: 500;
+            color: var(--text-secondary);
+            margin-bottom: 6px;
+        }
+
+        .input-wrapper {
+            position: relative;
+        }
+
+        .currency-symbol {
+            position: absolute;
+            left: 12px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--text-secondary);
+            font-size: 14px;
+        }
+
+        input[type="number"] {
+            width: 100%;
+            padding: 10px 12px 10px 28px;
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 600;
+            color: var(--text-primary);
+            outline: none;
+            box-sizing: border-box;
+            transition: border-color 0.2s;
+        }
+
+        input[type="number"]:focus {
+            border-color: var(--accent-blue);
+        }
+
+        /* Result Section */
+        .result-section {
+            background: #f8fafc;
+            border-radius: 12px;
+            padding: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border: 1px dashed var(--border-color);
+        }
+
+        .result-label {
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--text-secondary);
+        }
+
+        .result-value {
+            font-size: 32px;
+            font-weight: 800;
+            color: var(--text-primary);
+        }
+
+        .result-value.positive {
+            color: var(--accent-green);
+        }
+
+        .result-value.negative {
+            color: var(--accent-red);
+        }
+
+        .btn-add {
+            background: var(--text-primary);
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            font-size: 14px;
+            transition: opacity 0.2s;
+        }
+
+        .btn-add:hover {
+            opacity: 0.9;
+        }
+
+        /* Table Section */
+        .table-container {
+            overflow-x: auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 14px;
+        }
+
+        th {
+            text-align: left;
+            padding: 12px 16px;
+            color: var(--text-secondary);
+            font-weight: 600;
+            border-bottom: 2px solid var(--border-color);
+            white-space: nowrap;
+        }
+
+        td {
+            padding: 16px;
+            border-bottom: 1px solid var(--border-color);
+            color: var(--text-primary);
+            font-weight: 500;
+        }
+
+        tr:last-child td {
+            border-bottom: none;
+        }
+
+        .net-cell {
+            font-weight: 700;
+        }
+
+        .delete-btn {
+            color: var(--text-secondary);
+            cursor: pointer;
+            font-size: 18px;
+        }
+
+        .delete-btn:hover {
+            color: var(--accent-red);
+        }
+
+        /* Formula Hint */
+        .formula-hint {
+            font-size: 12px;
+            color: var(--text-secondary);
+            text-align: center;
+            margin-top: 10px;
+            font-family: monospace;
+            background: #eef2ff;
+            padding: 8px;
+            border-radius: 6px;
+            color: #4f46e5;
+        }
+
+        /* Download Btn */
+        .controls {
+            display: flex;
+            justify-content: flex-end;
+            margin-top: 10px;
+        }
+
+        .btn-download {
+            background: white;
+            border: 1px solid var(--border-color);
+            padding: 8px 16px;
+            border-radius: 6px;
+            font-weight: 600;
+            cursor: pointer;
+            color: var(--text-primary);
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="container" id="capture-area">
+
+        <!-- Calculator Section -->
+        <div class="card">
+            <div class="header">
+                <h1>Net MRR Calculator</h1>
+                <input type="month" id="monthSelect" class="month-selector">
+            </div>
+
+            <div class="input-grid">
+                <!-- Growth Factors -->
+                <div>
+                    <div class="section-title growth-title">
+                        <span>▲</span> Growth Factors (+)
+                    </div>
+
+                    <div class="input-group">
+                        <label class="label">New MRR</label>
+                        <div class="input-wrapper">
+                            <span class="currency-symbol">$</span>
+                            <input type="number" id="newMrr" placeholder="0" oninput="calculate()">
+                        </div>
+                    </div>
+
+                    <div class="input-group">
+                        <label class="label">Expansion MRR</label>
+                        <div class="input-wrapper">
+                            <span class="currency-symbol">$</span>
+                            <input type="number" id="expansionMrr" placeholder="0" oninput="calculate()">
+                        </div>
+                    </div>
+
+                    <div class="input-group">
+                        <label class="label">Reactivation MRR</label>
+                        <div class="input-wrapper">
+                            <span class="currency-symbol">$</span>
+                            <input type="number" id="reactivationMrr" placeholder="0" oninput="calculate()">
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Loss Factors -->
+                <div>
+                    <div class="section-title churn-title">
+                        <span>▼</span> Loss Factors (-)
+                    </div>
+
+                    <div class="input-group">
+                        <label class="label">Churn MRR</label>
+                        <div class="input-wrapper">
+                            <span class="currency-symbol">$</span>
+                            <input type="number" id="churnMrr" placeholder="0" oninput="calculate()">
+                        </div>
+                    </div>
+
+                    <div class="input-group">
+                        <label class="label">Contraction MRR</label>
+                        <div class="input-wrapper">
+                            <span class="currency-symbol">$</span>
+                            <input type="number" id="contractionMrr" placeholder="0" oninput="calculate()">
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="result-section">
+                <div>
+                    <div class="result-label">Net MRR Movement</div>
+                    <div class="formula-hint">New + Exp + React - Churn - Contr</div>
+                </div>
+                <div style="display: flex; align-items: center; gap: 20px;">
+                    <div class="result-value" id="netResult">$0.00</div>
+                    <button class="btn-add" onclick="addEntry()">+ Add Entry</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- History Table -->
+        <div class="card">
+            <div class="header">
+                <h1>History</h1>
+                <button class="btn-download" onclick="downloadImage()">Download Image</button>
+            </div>
+            <div class="table-container">
+                <table id="historyTable">
+                    <thead>
+                        <tr>
+                            <th>Month</th>
+                            <th>New</th>
+                            <th>Expansion</th>
+                            <th>Reactivation</th>
+                            <th>Churn</th>
+                            <th>Contraction</th>
+                            <th>Net MRR</th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <!-- Rows will be added here -->
+                    </tbody>
+                </table>
+            </div>
+            <div id="emptyState" style="text-align: center; padding: 40px; color: #9ca3af; font-size: 14px;">
+                No entries yet. Calculate and add above.
+            </div>
+        </div>
+
+    </div>
+
+    <script>
+        // Set default month to current
+        const date = new Date();
+        const monthStr = date.toISOString().slice(0, 7);
+        document.getElementById('monthSelect').value = monthStr;
+
+        function getVal(id) {
+            return parseFloat(document.getElementById(id).value) || 0;
+        }
+
+        function formatCurrency(num) {
+            return new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' }).format(num);
+        }
+
+        function calculate() {
+            const newMrr = getVal('newMrr');
+            const expansion = getVal('expansionMrr');
+            const reactivation = getVal('reactivationMrr');
+            const churn = getVal('churnMrr');
+            const contraction = getVal('contractionMrr');
+
+            const net = (newMrr + expansion + reactivation) - (churn + contraction);
+
+            const resultEl = document.getElementById('netResult');
+            resultEl.innerText = formatCurrency(net);
+
+            resultEl.className = 'result-value ' + (net >= 0 ? 'positive' : 'negative');
+
+            return {
+                net, newMrr, expansion, reactivation, churn, contraction
+            };
+        }
+
+        function addEntry() {
+            const data = calculate();
+            const monthVal = document.getElementById('monthSelect').value;
+
+            // Format Month (e.g., "2025-12" -> "Dec 2025")
+            const [year, month] = monthVal.split('-');
+            const dateObj = new Date(year, month - 1);
+            const monthLabel = dateObj.toLocaleString('default', { month: 'short', year: 'numeric' });
+
+            const tbody = document.querySelector('#historyTable tbody');
+            const row = document.createElement('tr');
+
+            row.innerHTML = `
+                <td>${monthLabel}</td>
+                <td style="color: #10b981">+${formatCurrency(data.newMrr)}</td>
+                <td style="color: #10b981">+${formatCurrency(data.expansion)}</td>
+                <td style="color: #10b981">+${formatCurrency(data.reactivation)}</td>
+                <td style="color: #ef4444">-${formatCurrency(data.churn)}</td>
+                <td style="color: #ef4444">-${formatCurrency(data.contraction)}</td>
+                <td class="net-cell ${data.net >= 0 ? 'growth-title' : 'churn-title'}">${formatCurrency(data.net)}</td>
+                <td><span class="delete-btn" onclick="this.closest('tr').remove(); checkEmpty();">×</span></td>
+            `;
+
+            // Insert at top
+            tbody.insertBefore(row, tbody.firstChild);
+
+            // Clear inputs
+            ['newMrr', 'expansionMrr', 'reactivationMrr', 'churnMrr', 'contractionMrr'].forEach(id => {
+                document.getElementById(id).value = '';
+            });
+            calculate(); // Reset display
+            checkEmpty();
+        }
+
+        function checkEmpty() {
+            const tbody = document.querySelector('#historyTable tbody');
+            const emptyState = document.getElementById('emptyState');
+            if (tbody.children.length === 0) {
+                emptyState.style.display = 'block';
+            } else {
+                emptyState.style.display = 'none';
+            }
+        }
+
+        function downloadImage() {
+            const element = document.getElementById('capture-area');
+            html2canvas(element, {
+                scale: 2,
+                backgroundColor: '#f3f4f6'
+            }).then(canvas => {
+                const link = document.createElement('a');
+                link.download = 'net-mrr-report.png';
+                link.href = canvas.toDataURL();
+                link.click();
+            });
+        }
+    </script>
+</body>
+
+</html>
