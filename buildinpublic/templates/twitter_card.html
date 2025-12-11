@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Twitter Post - Account Summary</title>
+    <style>
+        :root {
+            --bg-color: #eef6ff;
+            --card-bg: #ffffff;
+            --text-primary: #000000;
+            --text-secondary: #666666;
+            --accent-blue: #3b82f6;
+            --font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            font-family: var(--font-family);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            overflow: hidden;
+        }
+
+        .card-container {
+            /* This container is what we'd capture for a screenshot */
+            padding: 20px;
+        }
+
+        .card {
+            background: var(--card-bg);
+            padding: 50px 80px;
+            border-radius: 24px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.04);
+            text-align: center;
+            width: auto;
+            min-width: 600px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        h1 {
+            font-size: 28px;
+            font-weight: 500;
+            margin: 0 0 50px 0;
+            color: #111;
+            letter-spacing: -0.5px;
+            outline: none;
+            border-bottom: 2px solid transparent;
+        }
+
+        h1:focus, [contenteditable]:focus {
+            border-bottom: 2px solid #ddd;
+        }
+
+        .stats-container {
+            display: flex;
+            justify-content: space-between;
+            width: 100%;
+            gap: 60px;
+        }
+
+        .stat-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .label {
+            font-size: 16px;
+            color: var(--text-secondary);
+            margin-bottom: 12px;
+            font-weight: 400;
+            outline: none;
+        }
+
+        .value {
+            font-size: 42px;
+            font-weight: 800;
+            color: var(--text-primary);
+            margin-bottom: 8px;
+            line-height: 1;
+            outline: none;
+            letter-spacing: -1px;
+        }
+
+        .meta-group {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+        }
+
+        .change, .percentage {
+            font-size: 15px;
+            color: var(--accent-blue);
+            font-weight: 500;
+            outline: none;
+        }
+
+        /* Controls for the user (not part of the image) */
+        .controls {
+            margin-top: 30px;
+            opacity: 0.5;
+            transition: opacity 0.3s;
+        }
+        .controls:hover {
+            opacity: 1;
+        }
+        button {
+            background: #3b82f6;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 600;
+        }
+        button:hover {
+            background: #2563eb;
+        }
+
+        /* Hover effect to indicate editability */
+        [contenteditable]:hover {
+            background-color: rgba(0,0,0,0.02);
+            border-radius: 4px;
+            cursor: text;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="card-container" id="capture">
+        <div class="card">
+            <h1 contenteditable="true">Account summary</h1>
+            
+            <div class="stats-container">
+                <!-- Stat 1 -->
+                <div class="stat-item">
+                    <div class="label" contenteditable="true">MRR</div>
+                    <div class="value" contenteditable="true">$80K</div>
+                    <div class="meta-group">
+                        <div class="change" contenteditable="true">+$684</div>
+                        <div class="percentage" contenteditable="true">+0.86%</div>
+                    </div>
+                </div>
+
+                <!-- Stat 2 -->
+                <div class="stat-item">
+                    <div class="label" contenteditable="true">ARR</div>
+                    <div class="value" contenteditable="true">$960K</div>
+                    <div class="meta-group">
+                        <div class="change" contenteditable="true">+$8.21K</div>
+                        <div class="percentage" contenteditable="true">+0.86%</div>
+                    </div>
+                </div>
+
+                <!-- Stat 3 -->
+                <div class="stat-item">
+                    <div class="label" contenteditable="true">Subscribers</div>
+                    <div class="value" contenteditable="true">2,827</div>
+                    <div class="meta-group">
+                        <div class="change" contenteditable="true">+24</div>
+                        <div class="percentage" contenteditable="true">+0.86%</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="controls">
+        <p style="font-size: 12px; color: #666; margin-bottom: 10px;">Click any text to edit</p>
+        <!-- Optional: Add html2canvas logic here if requested, for now just a hint -->
+    </div>
+
+    <script>
+        // Simple script to prevent pasting rich text styles
+        document.querySelectorAll('[contenteditable]').forEach(el => {
+            el.addEventListener('paste', function(e) {
+                e.preventDefault();
+                var text = (e.originalEvent || e).clipboardData.getData('text/plain');
+                document.execCommand('insertText', false, text);
+            });
+            
+            // Optional: Blur on Enter for single-line feel (except maybe title)
+            el.addEventListener('keydown', function(e) {
+                if (e.key === 'Enter') {
+                    e.preventDefault();
+                    el.blur();
+                }
+            });
+        });
+    </script>
+</body>
+</html>

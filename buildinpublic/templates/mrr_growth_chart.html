@@ -1,0 +1,460 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MRR Growth Chart Template</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        :root {
+            --bg-color: #f3f4f6;
+            --card-bg: #ffffff;
+            --text-primary: #1f2937;
+            --text-secondary: #6b7280;
+            --accent-blue: #3b82f6;
+            --font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            font-family: var(--font-family);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            margin: 0;
+            padding: 20px;
+        }
+
+        .dashboard-card {
+            background: var(--card-bg);
+            border-radius: 12px;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+            width: 1000px;
+            padding: 24px;
+            box-sizing: border-box;
+        }
+
+        /* Header */
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 24px;
+        }
+
+        .title-group {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        h2 {
+            font-size: 20px;
+            font-weight: 600;
+            color: #111827;
+            margin: 0;
+        }
+
+        .info-icon {
+            color: #9ca3af;
+            font-size: 18px;
+            cursor: pointer;
+        }
+
+        .controls {
+            display: flex;
+            gap: 12px;
+        }
+
+        .btn-group {
+            display: flex;
+            border: 1px solid #e5e7eb;
+            border-radius: 6px;
+            overflow: hidden;
+        }
+
+        .btn {
+            padding: 6px 12px;
+            font-size: 13px;
+            font-weight: 500;
+            background: white;
+            border: none;
+            border-right: 1px solid #e5e7eb;
+            color: #374151;
+            cursor: pointer;
+        }
+
+        .btn:last-child {
+            border-right: none;
+        }
+
+        .btn.active {
+            background-color: #1f2937;
+            color: white;
+        }
+
+        .date-picker {
+            border: 1px solid #e5e7eb;
+            padding: 6px 12px;
+            border-radius: 6px;
+            font-size: 13px;
+            color: #374151;
+            background: white;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        /* Chart Toolbar */
+        .chart-toolbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .chart-type-toggle {
+            display: flex;
+            background: #f3f4f6;
+            padding: 2px;
+            border-radius: 6px;
+        }
+
+        .toggle-btn {
+            padding: 4px 12px;
+            font-size: 12px;
+            font-weight: 600;
+            border-radius: 4px;
+            border: none;
+            cursor: pointer;
+            color: #6b7280;
+            background: transparent;
+        }
+
+        .toggle-btn.active {
+            background: #1f2937;
+            color: white;
+            box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+        }
+
+        .time-range {
+            display: flex;
+            border: 1px solid #e5e7eb;
+            border-radius: 6px;
+            overflow: hidden;
+        }
+
+        .time-btn {
+            padding: 4px 12px;
+            font-size: 11px;
+            font-weight: 600;
+            background: white;
+            border: none;
+            border-right: 1px solid #e5e7eb;
+            color: #6b7280;
+            cursor: pointer;
+        }
+
+        .time-btn:last-child {
+            border-right: none;
+        }
+
+        .time-btn.active {
+            background: #1f2937;
+            color: white;
+        }
+
+        /* Chart Area */
+        .chart-container {
+            position: relative;
+            height: 300px;
+            width: 100%;
+            margin-bottom: 30px;
+        }
+
+        /* Footer Stats */
+        .stats-footer {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            gap: 20px;
+            padding-top: 20px;
+            border-top: 1px solid #f3f4f6;
+        }
+
+        .stat-item {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .stat-value {
+            font-size: 20px;
+            font-weight: 700;
+            color: #111827;
+            margin-bottom: 4px;
+            display: flex;
+            align-items: baseline;
+            gap: 6px;
+        }
+
+        .stat-label {
+            font-size: 12px;
+            color: #6b7280;
+        }
+
+        .trend {
+            font-size: 14px;
+            font-weight: 500;
+        }
+
+        .trend.positive {
+            color: #3b82f6;
+        }
+
+        .trend.negative {
+            color: #ef4444;
+        }
+
+        /* Editability */
+        [contenteditable]:hover {
+            background-color: rgba(0, 0, 0, 0.02);
+            border-radius: 4px;
+            cursor: text;
+        }
+
+        [contenteditable]:focus {
+            outline: 2px solid #e5e7eb;
+            background-color: white;
+        }
+
+        /* Data Input Area (Hidden by default, visible for template usage) */
+        .data-editor {
+            margin-top: 20px;
+            padding: 15px;
+            background: #f9fafb;
+            border-radius: 8px;
+            border: 1px dashed #d1d5db;
+        }
+
+        .data-editor h4 {
+            margin: 0 0 10px 0;
+            font-size: 14px;
+        }
+
+        .data-row {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        .data-input {
+            width: 60px;
+            padding: 4px;
+            font-size: 12px;
+            border: 1px solid #d1d5db;
+            border-radius: 4px;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="dashboard-card">
+
+        <!-- Header -->
+        <div class="header">
+            <div class="title-group">
+                <h2 contenteditable="true">Monthly Recurring Revenue</h2>
+                <span class="info-icon">ⓘ</span>
+            </div>
+            <div class="controls">
+                <div class="btn-group">
+                    <button class="btn">Filter</button>
+                    <button class="btn">Save</button>
+                </div>
+                <div class="date-picker" contenteditable="true">
+                    2024-09-02 to 2025-09-01
+                </div>
+            </div>
+        </div>
+
+        <!-- Toolbar -->
+        <div class="chart-toolbar">
+            <div class="chart-type-toggle">
+                <button class="toggle-btn active">LINE</button>
+                <button class="toggle-btn">BAR</button>
+            </div>
+            <!-- Icons placeholder -->
+            <div style="flex-grow: 1; margin-left: 20px; color: #9ca3af; font-size: 14px;">
+                <!-- Simple visual placeholders for the toolbar icons -->
+                ⇡ 123 ◯ ☖ % 🎯 ⬇
+            </div>
+            <div class="time-range">
+                <button class="time-btn">DAY</button>
+                <button class="time-btn">WEEK</button>
+                <button class="time-btn active">MONTH</button>
+                <button class="time-btn">QUARTER</button>
+                <button class="time-btn">YEAR</button>
+            </div>
+        </div>
+
+        <!-- Chart -->
+        <div class="chart-container">
+            <canvas id="mrrChart"></canvas>
+        </div>
+
+        <!-- Footer Stats -->
+        <div class="stats-footer">
+            <div class="stat-item">
+                <div class="stat-value" contenteditable="true">$76.79k</div>
+                <div class="stat-label" contenteditable="true">Current MRR</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-value">
+                    <span contenteditable="true">$74.31k</span>
+                    <span class="trend positive" contenteditable="true">+3.33%</span>
+                </div>
+                <div class="stat-label" contenteditable="true">30 days ago</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-value">
+                    <span contenteditable="true">$72.50k</span>
+                    <span class="trend positive" contenteditable="true">+5.91%</span>
+                </div>
+                <div class="stat-label" contenteditable="true">60 days ago</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-value">
+                    <span contenteditable="true">$60.03k</span>
+                    <span class="trend positive" contenteditable="true">+27.91%</span>
+                </div>
+                <div class="stat-label" contenteditable="true">180 days ago</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-value">
+                    <span contenteditable="true">$42.11k</span>
+                    <span class="trend positive" contenteditable="true">+82.35%</span>
+                </div>
+                <div class="stat-label" contenteditable="true">365 days ago</div>
+            </div>
+        </div>
+
+        <!-- Data Editor (Simple implementation to update chart) -->
+        <div class="data-editor">
+            <h4>Update Chart Data (Values in k)</h4>
+            <div class="data-row" id="inputsContainer">
+                <!-- Inputs will be generated here -->
+            </div>
+            <button onclick="updateChart()"
+                style="margin-top: 10px; padding: 6px 12px; background: #3b82f6; color: white; border: none; border-radius: 4px; cursor: pointer;">Update
+                Graph</button>
+        </div>
+
+    </div>
+
+    <script>
+        // Initial Data matching the curve in the image
+        const labels = ['Sep 2024', 'Oct', 'Nov 2024', 'Dec', 'Jan 2025', 'Feb', 'Mar 2025', 'Apr', 'May 2025', 'Jun', 'Jul 2025', 'Aug'];
+        const dataPoints = [46, 50, 53.5, 55.8, 56.1, 59.5, 63.8, 67.2, 70.5, 72.1, 74.5, 76.8];
+
+        const ctx = document.getElementById('mrrChart').getContext('2d');
+
+        // Gradient Fill
+        const gradient = ctx.createLinearGradient(0, 0, 0, 300);
+        gradient.addColorStop(0, 'rgba(59, 130, 246, 0.1)'); // Light Blue
+        gradient.addColorStop(1, 'rgba(59, 130, 246, 0)');
+
+        let chart = new Chart(ctx, {
+            type: 'line',
+            data: {
+                labels: labels,
+                datasets: [{
+                    label: 'MRR',
+                    data: dataPoints,
+                    borderColor: '#1f2937', // Dark grey/black line
+                    backgroundColor: gradient,
+                    borderWidth: 2,
+                    pointBackgroundColor: '#1f2937',
+                    pointBorderColor: '#fff',
+                    pointBorderWidth: 2,
+                    pointRadius: 4,
+                    pointHoverRadius: 6,
+                    fill: true,
+                    tension: 0.1 // Slight curve
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: { display: false },
+                    tooltip: {
+                        mode: 'index',
+                        intersect: false,
+                        backgroundColor: 'rgba(255, 255, 255, 0.9)',
+                        titleColor: '#1f2937',
+                        bodyColor: '#1f2937',
+                        borderColor: '#e5e7eb',
+                        borderWidth: 1,
+                        callbacks: {
+                            label: function (context) {
+                                return '$' + context.parsed.y + 'k';
+                            }
+                        }
+                    }
+                },
+                scales: {
+                    y: {
+                        beginAtZero: false,
+                        min: 40,
+                        max: 80,
+                        grid: {
+                            color: '#f3f4f6'
+                        },
+                        ticks: {
+                            callback: function (value) { return '$' + value + 'k'; },
+                            color: '#9ca3af',
+                            font: { size: 11 }
+                        }
+                    },
+                    x: {
+                        grid: {
+                            display: false
+                        },
+                        ticks: {
+                            color: '#9ca3af',
+                            font: { size: 11 }
+                        }
+                    }
+                }
+            }
+        });
+
+        // Generate Inputs for Editing
+        const container = document.getElementById('inputsContainer');
+        dataPoints.forEach((val, index) => {
+            const input = document.createElement('input');
+            input.type = 'number';
+            input.value = val;
+            input.className = 'data-input';
+            input.dataset.index = index;
+            input.title = labels[index];
+            container.appendChild(input);
+        });
+
+        function updateChart() {
+            const inputs = document.querySelectorAll('.data-input');
+            const newData = [];
+            inputs.forEach(input => {
+                newData.push(parseFloat(input.value));
+            });
+            chart.data.datasets[0].data = newData;
+            chart.update();
+        }
+    </script>
+
+</body>
+
+</html>

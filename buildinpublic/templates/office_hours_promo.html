@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Office Hours Promo Template</title>
+    <style>
+        :root {
+            --font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+        }
+
+        body {
+            margin: 0;
+            padding: 0;
+            height: 100vh;
+            width: 100vw;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-family: var(--font-family);
+            background-color: #111;
+            overflow: hidden;
+        }
+
+        .card-container {
+            /* Aspect ratio roughly 16:9 for Twitter/Socials */
+            width: 1200px;
+            height: 675px;
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            color: white;
+            overflow: hidden;
+
+            /* Complex Gradient Background */
+            background:
+                radial-gradient(circle at 10% 20%, rgba(139, 92, 246, 1) 0%, rgba(139, 92, 246, 0) 50%),
+                radial-gradient(circle at 90% 10%, rgba(249, 115, 22, 1) 0%, rgba(249, 115, 22, 0) 50%),
+                radial-gradient(circle at 80% 80%, rgba(236, 72, 153, 1) 0%, rgba(236, 72, 153, 0) 50%),
+                radial-gradient(circle at 20% 90%, rgba(168, 85, 247, 1) 0%, rgba(168, 85, 247, 0) 50%),
+                linear-gradient(135deg, #4c1d95 0%, #be185d 50%, #c2410c 100%);
+            background-size: 150% 150%;
+            animation: gradientMove 15s ease infinite;
+            /* Subtle movement */
+        }
+
+        @keyframes gradientMove {
+            0% {
+                background-position: 0% 50%;
+            }
+
+            50% {
+                background-position: 100% 50%;
+            }
+
+            100% {
+                background-position: 0% 50%;
+            }
+        }
+
+        /* Main Content Area */
+        .main-content {
+            display: flex;
+            align-items: center;
+            gap: 40px;
+            margin-bottom: 60px;
+            z-index: 10;
+        }
+
+        .avatars {
+            display: flex;
+            align-items: center;
+        }
+
+        .avatar-circle {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            border: 6px solid white;
+            background-color: #ddd;
+            background-size: cover;
+            background-position: center;
+            position: relative;
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+        }
+
+        .avatar-circle:first-child {
+            z-index: 1;
+            margin-right: -30px;
+            /* Overlap */
+            background-image: url('https://images.unsplash.com/photo-1534528741775-53994a69daeb?ixlib=rb-4.0.3&auto=format&fit=crop&w=200&q=80');
+            /* Placeholder woman */
+        }
+
+        .avatar-circle:last-child {
+            z-index: 2;
+            background-color: white;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        /* Heart Icon inside the second circle */
+        .heart-icon {
+            width: 60%;
+            height: 60%;
+            background-color: #7c3aed;
+            /* Purple heart color */
+            mask: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M11.645 20.91l-.007-.003-.022-.012a15.247 15.247 0 01-.383-.218 25.18 25.18 0 01-4.244-3.17C4.688 15.36 2.25 12.174 2.25 8.25 2.25 5.322 4.714 3 7.688 3A5.5 5.5 0 0112 5.052 5.5 5.5 0 0116.313 3c2.973 0 5.437 2.322 5.437 5.25 0 3.925-2.438 7.111-4.739 9.256a25.175 25.175 0 01-4.244 3.17 15.247 15.247 0 01-.383.219l-.022.012-.007.004-.003.001a.752.752 0 01-.704 0l-.003-.001z"/></svg>') no-repeat center;
+            -webkit-mask: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor"><path d="M11.645 20.91l-.007-.003-.022-.012a15.247 15.247 0 01-.383-.218 25.18 25.18 0 01-4.244-3.17C4.688 15.36 2.25 12.174 2.25 8.25 2.25 5.322 4.714 3 7.688 3A5.5 5.5 0 0112 5.052 5.5 5.5 0 0116.313 3c2.973 0 5.437 2.322 5.437 5.25 0 3.925-2.438 7.111-4.739 9.256a25.175 25.175 0 01-4.244 3.17 15.247 15.247 0 01-.383.219l-.022.012-.007.004-.003.001a.752.752 0 01-.704 0l-.003-.001z"/></svg>') no-repeat center;
+        }
+
+        .text-content {
+            text-align: left;
+        }
+
+        h1 {
+            font-size: 84px;
+            font-weight: 900;
+            line-height: 0.95;
+            margin: 0;
+            text-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+
+        .subtitle {
+            font-size: 24px;
+            font-weight: 600;
+            margin-top: 16px;
+            opacity: 0.9;
+        }
+
+        /* Footer Quote Area */
+        .footer-quote {
+            max-width: 800px;
+            z-index: 10;
+        }
+
+        .quote-text {
+            font-size: 28px;
+            font-weight: 800;
+            margin-bottom: 12px;
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .author-info {
+            font-size: 18px;
+            font-weight: 400;
+            opacity: 0.9;
+            margin-bottom: 20px;
+        }
+
+        .small-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background-color: #fff;
+            margin: 0 auto;
+            background-image: url('https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?ixlib=rb-4.0.3&auto=format&fit=crop&w=100&q=80');
+            /* Placeholder man */
+            background-size: cover;
+            background-position: center;
+            border: 2px solid rgba(255, 255, 255, 0.5);
+        }
+
+        /* Editability hints */
+        [contenteditable]:hover {
+            background-color: rgba(255, 255, 255, 0.1);
+            border-radius: 4px;
+            cursor: text;
+            outline: none;
+        }
+
+        [contenteditable]:focus {
+            background-color: rgba(255, 255, 255, 0.15);
+            outline: none;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="card-container">
+
+        <div class="main-content">
+            <div class="avatars">
+                <div class="avatar-circle"></div> <!-- User Image -->
+                <div class="avatar-circle">
+                    <div class="heart-icon"></div> <!-- Brand Icon -->
+                </div>
+            </div>
+
+            <div class="text-content">
+                <h1 contenteditable="true">
+                    Senja's<br>
+                    Office Hours
+                </h1>
+                <div class="subtitle" contenteditable="true">Monday, September 22</div>
+            </div>
+        </div>
+
+        <div class="footer-quote">
+            <div class="quote-text" contenteditable="true">“I had no idea Senja could do so much badass stuff”</div>
+            <div class="author-info" contenteditable="true">Jasmine Hermann, Boss Creator</div>
+            <div class="small-avatar"></div>
+        </div>
+
+    </div>
+
+    <script>
+        // Prevent rich text paste
+        document.querySelectorAll('[contenteditable]').forEach(el => {
+            el.addEventListener('paste', function (e) {
+                e.preventDefault();
+                var text = (e.originalEvent || e).clipboardData.getData('text/plain');
+                document.execCommand('insertText', false, text);
+            });
+        });
+    </script>
+
+</body>
+
+</html>

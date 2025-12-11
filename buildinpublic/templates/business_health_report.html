@@ -1,0 +1,434 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Business Health Report</title>
+    <style>
+        :root {
+            --bg-color: #e0efff;
+            /* Slightly deeper blue than before to match image */
+            --card-bg: #ffffff;
+            --text-primary: #111827;
+            --text-secondary: #6b7280;
+            --accent-blue: #3b82f6;
+            --accent-green: #10b981;
+            --accent-red: #ef4444;
+            --font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            font-family: var(--font-family);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 40px 20px;
+            min-height: 100vh;
+            margin: 0;
+            box-sizing: border-box;
+        }
+
+        .container {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            width: 100%;
+            max-width: 600px;
+            /* Constrain width for the mobile/card look */
+        }
+
+        .card {
+            background: var(--card-bg);
+            border-radius: 20px;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.03);
+            padding: 30px;
+            width: 100%;
+            box-sizing: border-box;
+        }
+
+        /* Typography */
+        h2 {
+            font-size: 24px;
+            font-weight: 700;
+            text-align: center;
+            margin: 0 0 30px 0;
+            color: var(--text-primary);
+        }
+
+        /* --- Card 1: Account Summary --- */
+        .summary-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+            text-align: center;
+        }
+
+        .summary-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .summary-label {
+            font-size: 14px;
+            color: var(--text-secondary);
+            margin-bottom: 8px;
+        }
+
+        .summary-value {
+            font-size: 28px;
+            font-weight: 800;
+            color: var(--text-primary);
+            margin-bottom: 4px;
+            letter-spacing: -0.5px;
+        }
+
+        .summary-sub {
+            font-size: 13px;
+            font-weight: 500;
+            color: var(--accent-blue);
+            display: flex;
+            flex-direction: column;
+            gap: 2px;
+        }
+
+        /* --- Card 2: Business Health --- */
+        .health-list {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+
+        .health-row {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            font-size: 15px;
+        }
+
+        .health-label-group {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            color: #374151;
+            font-weight: 400;
+        }
+
+        .icon {
+            width: 20px;
+            height: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        /* Icon Colors */
+        .icon-blue {
+            color: #3b82f6;
+        }
+
+        .icon-yellow {
+            color: #f59e0b;
+        }
+
+        .icon-red {
+            color: #ef4444;
+        }
+
+        .icon-indigo {
+            color: #6366f1;
+        }
+
+        .health-value-group {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            text-align: right;
+        }
+
+        .health-value {
+            font-weight: 700;
+            color: var(--text-primary);
+        }
+
+        .health-meta {
+            font-size: 13px;
+            color: var(--accent-blue);
+            font-weight: 500;
+        }
+
+        .health-meta.red {
+            color: #ef4444;
+        }
+
+        .health-meta.gray {
+            color: #9ca3af;
+        }
+
+        /* Editability */
+        [contenteditable] {
+            outline: none;
+            border-bottom: 1px solid transparent;
+            min-width: 10px;
+        }
+
+        [contenteditable]:hover {
+            border-bottom: 1px solid #e5e7eb;
+        }
+
+        [contenteditable]:focus {
+            border-bottom: 1px solid #3b82f6;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="container">
+
+        <!-- Card 1: Account Summary -->
+        <div class="card">
+            <h2 contenteditable="true">Account summary</h2>
+            <div class="summary-grid">
+                <div class="summary-item">
+                    <div class="summary-label" contenteditable="true">MRR</div>
+                    <div class="summary-value" contenteditable="true">$78.3K</div>
+                    <div class="summary-sub">
+                        <span contenteditable="true">+$1.1K</span>
+                        <span contenteditable="true">+1.43%</span>
+                    </div>
+                </div>
+                <div class="summary-item">
+                    <div class="summary-label" contenteditable="true">ARR</div>
+                    <div class="summary-value" contenteditable="true">$940K</div>
+                    <div class="summary-sub">
+                        <span contenteditable="true">+$13.3K</span>
+                        <span contenteditable="true">+1.43%</span>
+                    </div>
+                </div>
+                <div class="summary-item">
+                    <div class="summary-label" contenteditable="true">Subscribers</div>
+                    <div class="summary-value" contenteditable="true">2,776</div>
+                    <div class="summary-sub">
+                        <span contenteditable="true">+26</span>
+                        <span contenteditable="true">+0.95%</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Card 2: Business Health -->
+        <div class="card">
+            <h2 contenteditable="true">Your Business Health</h2>
+
+            <div class="health-list">
+
+                <!-- New Leads -->
+                <div class="health-row">
+                    <div class="health-label-group">
+                        <div class="icon icon-blue">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"
+                                xmlns="http://www.w3.org/2000/svg">
+                                <path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z" fill="none" />
+                                <path
+                                    d="M2.2 11.9l.9.9L12 4l8.9 8.9.9-.9L12 2.1 2.2 11.9zM7 20h10v-8H7v8zm2-6h6v4H9v-4z"
+                                    fill="currentColor" opacity="0" />
+                                <path
+                                    d="M21 4H3a1 1 0 0 0-1 1v1h20V5a1 1 0 0 0-1-1zM2 9h20v2H2zM4 14h16v2H4zM7 19h10v2H7z"
+                                    fill="none" />
+                                <path d="M4 19h4l-4-6v6zm16 0v-6l-4 6h4z" fill="none" />
+                                <path
+                                    d="M3 4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h18c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2H3zm0 2h18v1H3V6zm0 3h18v2H3V9zm0 5h16v2H4v-2zm3 5H4l4-6v6zm10 0l-4-6h4v6z"
+                                    fill="none" />
+                                <path d="M10 18h4v-2h-4v2zM3 6h18v2H3zM3 13h18v2H3z" fill="none" />
+                                <path d="M6 13h12v-2H6z" fill="none" />
+                                <path
+                                    d="M2.5 12a.5.5 0 0 1 .5-.5h18a.5.5 0 0 1 .5.5v.5a.5.5 0 0 1-.5.5H3a.5.5 0 0 1-.5-.5v-.5z"
+                                    fill="none" />
+                                <path d="M5 6h14v2H5z" fill="none" />
+                                <path
+                                    d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm0 16H5V5h14v14z"
+                                    fill="none" />
+                                <path d="M11 7h2v2h-2zM7 7h2v2H7zM15 7h2v2h-2z" fill="none" />
+                                <path d="M2.5 19H21.5" stroke="currentColor" stroke-width="2" stroke-linecap="round" />
+                                <path d="M4 15L12 21L20 15" stroke="currentColor" stroke-width="2"
+                                    stroke-linecap="round" />
+                                <path d="M4 9L12 15L20 9" stroke="currentColor" stroke-width="2"
+                                    stroke-linecap="round" />
+                                <path d="M4 3L12 9L20 3" stroke="currentColor" stroke-width="2"
+                                    stroke-linecap="round" />
+                            </svg> <!-- Funnel-ish icon -->
+                        </div>
+                        <span contenteditable="true">New Leads</span>
+                    </div>
+                    <div class="health-value-group">
+                        <span class="health-value" contenteditable="true">295</span>
+                        <span class="health-meta red" contenteditable="true">-15.23%</span>
+                    </div>
+                </div>
+
+                <!-- New Trials -->
+                <div class="health-row">
+                    <div class="health-label-group">
+                        <div class="icon icon-blue">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M5 22h14" />
+                                <path d="M5 2h14" />
+                                <path d="M17 22v-4.172a2 2 0 0 0-.586-1.414L12 12l-4.414 4.414A2 2 0 0 0 7 17.828V22" />
+                                <path d="M7 2v4.172a2 2 0 0 0 .586 1.414L12 12l4.414-4.414A2 2 0 0 0 17 6.172V2" />
+                            </svg>
+                        </div>
+                        <span contenteditable="true">New Trials</span>
+                    </div>
+                    <div class="health-value-group">
+                        <span class="health-value" contenteditable="true">0</span>
+                        <span class="health-meta" contenteditable="true">+0%</span>
+                    </div>
+                </div>
+
+                <!-- New Business -->
+                <div class="health-row">
+                    <div class="health-label-group">
+                        <div class="icon icon-yellow">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                                <path
+                                    d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" />
+                            </svg>
+                        </div>
+                        <span contenteditable="true">New Business</span>
+                    </div>
+                    <div class="health-value-group">
+                        <span class="health-value" contenteditable="true">$1,239 MRR</span>
+                        <span class="health-meta" contenteditable="true">(44)</span>
+                    </div>
+                </div>
+
+                <!-- Expansion -->
+                <div class="health-row">
+                    <div class="health-label-group">
+                        <div class="icon icon-indigo">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                                <circle cx="12" cy="12" r="10" fill="#3b82f6" />
+                                <path d="M12 8l-4 4h8l-4-4z" fill="white" />
+                                <path d="M12 16v-4" stroke="white" stroke-width="2" />
+                            </svg>
+                        </div>
+                        <span contenteditable="true">Expansion</span>
+                    </div>
+                    <div class="health-value-group">
+                        <span class="health-value" contenteditable="true">$322 MRR</span>
+                        <span class="health-meta" contenteditable="true">(14)</span>
+                    </div>
+                </div>
+
+                <!-- Reactivation -->
+                <div class="health-row">
+                    <div class="health-label-group">
+                        <div class="icon icon-yellow">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                                <circle cx="12" cy="12" r="10" fill="#f59e0b" />
+                                <path d="M12 8l3.5 6H8.5L12 8z" fill="white" />
+                            </svg>
+                        </div>
+                        <span contenteditable="true">Reactivation</span>
+                    </div>
+                    <div class="health-value-group">
+                        <span class="health-value" contenteditable="true">$289 MRR</span>
+                        <span class="health-meta" contenteditable="true">(8)</span>
+                    </div>
+                </div>
+
+                <!-- Contraction -->
+                <div class="health-row">
+                    <div class="health-label-group">
+                        <div class="icon icon-red">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                                <circle cx="12" cy="12" r="10" fill="#ef4444" />
+                                <path d="M12 16l-4-4h8l-4 4z" fill="white" />
+                                <path d="M12 8v4" stroke="white" stroke-width="2" />
+                            </svg>
+                        </div>
+                        <span contenteditable="true">Contraction</span>
+                    </div>
+                    <div class="health-value-group">
+                        <span class="health-value" contenteditable="true">-$14 MRR</span>
+                        <span class="health-meta red" contenteditable="true">(2)</span>
+                    </div>
+                </div>
+
+                <!-- Churn -->
+                <div class="health-row">
+                    <div class="health-label-group">
+                        <div class="icon icon-red">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                                <circle cx="12" cy="12" r="10" fill="#ef4444" />
+                                <path d="M15 9l-6 6M9 9l6 6" stroke="white" stroke-width="2" stroke-linecap="round" />
+                            </svg>
+                        </div>
+                        <span contenteditable="true">Churn</span>
+                    </div>
+                    <div class="health-value-group">
+                        <span class="health-value" contenteditable="true">-$732 MRR</span>
+                        <span class="health-meta red" contenteditable="true">(26)</span>
+                    </div>
+                </div>
+
+                <!-- Net Movement -->
+                <div class="health-row">
+                    <div class="health-label-group">
+                        <div class="icon icon-yellow">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M12 20V10" />
+                                <path d="M18 20V4" />
+                                <path d="M6 20v-4" />
+                            </svg>
+                        </div>
+                        <span contenteditable="true">Net Movement</span>
+                    </div>
+                    <div class="health-value-group">
+                        <span class="health-value" contenteditable="true">$1,105 MRR</span>
+                        <span class="health-meta" contenteditable="true">+1.43%</span>
+                    </div>
+                </div>
+
+                <!-- Net Cash Flow -->
+                <div class="health-row">
+                    <div class="health-label-group">
+                        <div class="icon icon-blue">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <line x1="12" y1="1" x2="12" y2="23" />
+                                <path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6" />
+                            </svg>
+                        </div>
+                        <span contenteditable="true">Net Cash Flow</span>
+                    </div>
+                    <div class="health-value-group">
+                        <span class="health-value" contenteditable="true">$19,604</span>
+                        <span class="health-meta" contenteditable="true">+16.15%</span>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+    </div>
+
+    <script>
+        // Prevent rich text paste
+        document.querySelectorAll('[contenteditable]').forEach(el => {
+            el.addEventListener('paste', function (e) {
+                e.preventDefault();
+                var text = (e.originalEvent || e).clipboardData.getData('text/plain');
+                document.execCommand('insertText', false, text);
+            });
+        });
+    </script>
+
+</body>
+
+</html>
